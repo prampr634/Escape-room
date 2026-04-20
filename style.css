@@ -5,17 +5,10 @@ body {
   color: white;
 }
 
-/* CENTER GAME (ITCH.IO STANDARD) */
-#game-wrapper {
-  width: 100%;
-  max-width: 900px;
-  margin: auto;
-  text-align: center;
-}
-
-/* SCREENS SYSTEM */
+/* SCREEN SYSTEM */
 .screen {
   display: none;
+  text-align: center;
   padding: 20px;
 }
 
@@ -23,8 +16,26 @@ body {
   display: block;
 }
 
-/* GAME LAYOUT */
-#game {
+/* MAP */
+.map-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  max-width: 300px;
+  margin: auto;
+}
+
+button {
+  padding: 10px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* HUD */
+#gameScreen {
   display: flex;
 }
 
@@ -39,25 +50,35 @@ body {
   padding: 20px;
 }
 
-/* INTERACTABLES */
+/* ITEMS */
 .item {
   background: #1e293b;
   margin: 10px;
   padding: 10px;
-  cursor: pointer;
   border-radius: 8px;
-}
-
-.item:hover {
-  background: #334155;
-}
-
-/* BUTTONS */
-button {
-  padding: 10px 15px;
-  margin-top: 10px;
-  background: #1e293b;
-  border: none;
-  color: white;
   cursor: pointer;
+}
+
+/* FADE ANIMATION */
+#fade {
+  position: fixed;
+  inset: 0;
+  background: black;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+  z-index: 999;
+}
+
+/* DIALOGUE BOX */
+#dialogueBox {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(17,24,39,0.95);
+  padding: 15px;
+  border-radius: 10px;
+  display: none;
+  max-width: 400px;
 }
