@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Escape Room: School Secrets</title>
@@ -8,64 +8,45 @@
 
 <body>
 
-  <h1>🏫 Escape Room: School Secrets</h1>
+<div id="game-wrapper">
 
-  <div id="game">
+  <!-- MENU -->
+  <div id="menu" class="screen active">
+    <h1>🏫 Escape Room: School Secrets</h1>
+    <button onclick="startGame()">Start Game</button>
+  </div>
 
-    <!-- CLASSROOM -->
-    <div id="classroom" class="room active">
-      <h2>Classroom</h2>
-      <p>You are locked inside after school… something feels off.</p>
+  <!-- GAME -->
+  <div id="game" class="screen">
 
-      <button onclick="getItem('note')">📄 Check Desk</button>
-      <button onclick="solveMath()">📊 Math Poster</button>
-      <button onclick="goRoom('hallway')">➡ Go Hallway</button>
+    <div id="hud">
+      <h3>Inventory</h3>
+      <div id="inventory"></div>
+      <h3>Status</h3>
+      <div id="status"></div>
+      <button onclick="restart()">Restart</button>
     </div>
 
-    <!-- HALLWAY -->
-    <div id="hallway" class="room">
-      <h2>Hallway</h2>
-
-      <button onclick="talkTeacher()">🧑‍🏫 Talk to Teacher</button>
-      <button onclick="goRoom('lockers')">➡ Lockers</button>
-      <button onclick="goRoom('classroom')">⬅ Back</button>
-    </div>
-
-    <!-- LOCKERS -->
-    <div id="lockers" class="room">
-      <h2>Lockers</h2>
-
-      <button onclick="openLocker()">🔒 Open Locker</button>
-      <button onclick="goRoom('library')">➡ Library</button>
-      <button onclick="goRoom('hallway')">⬅ Back</button>
-    </div>
-
-    <!-- LIBRARY -->
-    <div id="library" class="room">
-      <h2>Library</h2>
-
-      <button onclick="libraryPuzzle()">📚 Inspect Books</button>
-      <button onclick="goRoom('secret')">🚪 Try Hidden Door</button>
-      <button onclick="goRoom('lockers')">⬅ Back</button>
-    </div>
-
-    <!-- SECRET END -->
-    <div id="secret" class="room">
-      <h2>🚨 SECRET LAB</h2>
-      <p>Alarm is going off… something went VERY wrong here.</p>
-      <button onclick="escape()">🏃 ESCAPE</button>
+    <div id="screen">
+      <div id="room-title"></div>
+      <div id="room-content"></div>
     </div>
 
   </div>
 
-  <!-- INVENTORY -->
-  <div id="inventory">
-    Inventory: <span id="items"></span>
+  <!-- END SCREENS -->
+  <div id="win" class="screen">
+    <h1>🟢 YOU ESCAPED</h1>
+    <button onclick="restart()">Play Again</button>
   </div>
 
-  <!-- POPUP -->
-  <div id="popup"></div>
+  <div id="lose" class="screen">
+    <h1>🔴 TRAPPED FOREVER</h1>
+    <button onclick="restart()">Try Again</button>
+  </div>
 
-  <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
