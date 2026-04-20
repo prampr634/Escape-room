@@ -1,84 +1,46 @@
 body {
-  margin: 0;
   font-family: Arial;
   background: #050b1a;
   color: white;
+  text-align: center;
 }
 
-/* SCREEN SYSTEM */
-.screen {
+.room {
   display: none;
-  text-align: center;
   padding: 20px;
 }
 
-.active {
+.room.active {
   display: block;
 }
 
-/* MAP */
-.map-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  max-width: 300px;
-  margin: auto;
-}
-
 button {
+  margin: 8px;
   padding: 10px;
   background: #1e293b;
   color: white;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
+  border-radius: 8px;
 }
 
-/* HUD */
-#gameScreen {
-  display: flex;
+button:hover {
+  background: #334155;
 }
 
-#hud {
-  width: 200px;
+#inventoryBox {
   background: #0b1220;
   padding: 10px;
-}
-
-#screen {
-  flex: 1;
-  padding: 20px;
-}
-
-/* ITEMS */
-.item {
-  background: #1e293b;
   margin: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
-/* FADE ANIMATION */
-#fade {
+#popup {
   position: fixed;
-  inset: 0;
-  background: black;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.4s;
-  z-index: 999;
-}
-
-/* DIALOGUE BOX */
-#dialogueBox {
-  position: fixed;
-  bottom: 40px;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(17,24,39,0.95);
+  background: #111827;
   padding: 15px;
   border-radius: 10px;
   display: none;
-  max-width: 400px;
 }
