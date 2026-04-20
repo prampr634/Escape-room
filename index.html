@@ -1,52 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Escape Room: School Secrets</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<div id="fade"></div>
 
-<body>
-
-<div id="game-wrapper">
-
-  <!-- MENU -->
-  <div id="menu" class="screen active">
-    <h1>🏫 Escape Room: School Secrets</h1>
-    <button onclick="startGame()">Start Game</button>
-  </div>
-
-  <!-- GAME -->
-  <div id="game" class="screen">
-
-    <div id="hud">
-      <h3>Inventory</h3>
-      <div id="inventory"></div>
-      <h3>Status</h3>
-      <div id="status"></div>
-      <button onclick="restart()">Restart</button>
-    </div>
-
-    <div id="screen">
-      <div id="room-title"></div>
-      <div id="room-content"></div>
-    </div>
-
-  </div>
-
-  <!-- END SCREENS -->
-  <div id="win" class="screen">
-    <h1>🟢 YOU ESCAPED</h1>
-    <button onclick="restart()">Play Again</button>
-  </div>
-
-  <div id="lose" class="screen">
-    <h1>🔴 TRAPPED FOREVER</h1>
-    <button onclick="restart()">Try Again</button>
-  </div>
-
+<div id="dialogueBox">
+  <div id="dialogueText"></div>
 </div>
 
-<script src="script.js"></script>
-</body>
-</html>
+<!-- 🗺️ MAP SCREEN -->
+<div id="mapScreen" class="screen active">
+  <h1>🏫 School Map</h1>
+
+  <div class="map-grid">
+    <button onclick="enterRoom('classroom')">Classroom</button>
+    <button onclick="enterRoom('hallway')">Hallway</button>
+    <button onclick="enterRoom('lockers')">Lockers</button>
+    <button onclick="enterRoom('library')">Library</button>
+  </div>
+
+  <button onclick="startGame()">Start Game</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen">
+  <div id="hud">
+    <h3>Inventory</h3>
+    <div id="inventory"></div>
+
+    <button onclick="openMap()">Map</button>
+  </div>
+
+  <div id="screen">
+    <h2 id="room-title"></h2>
+    <div id="room-content"></div>
+  </div>
+</div>
