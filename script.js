@@ -1,80 +1,138 @@
-let inventory = [];
-let mathSolved = false;
-let teacherClue = false;
-let bookSolved = false;
+let state;
 
-// ROOM SWITCHING
-function goRoom(room) {
-  document.querySelectorAll(".room").forEach(r => r.classList.remove("active"));
-  document.getElementById(room).classList.add("active");
+// 🎮 INIT GAME
+function startGame() {
+  state = {
+    inventory: [],
+    flags: {
+      math: false,
+      locker: false,
+      library: false
+    },
+    room: "classroom"
+  };
+
+  switchScreen("game");
+  render();
 }
 
-// INVENTORY
-function updateInventory() {
-  document.getElementById("items").innerText = inventory.join(", ");
+// 🔄 SCREEN SWITCH
+function switchScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-function getItem(item) {
-  if (!inventory.includes(item)) {
-    inventory.push(item);
-    showPopup("You found: " + item);
-    updateInventory();
+// 🎮 ROOM DATA
+const rooms = {
+  classroom: {
+    title: "Classroom",
+    items: [
+      { text: "📊 Solve Math", action: mathPuzzle },
+      { text: "🚪 Hallway", action: () => changeRoom("hallway") }
+    ]
+  },
+
+  hallway: {
+    title: "Hallway",
+    items: [
+      { text: "🧑‍🏫 Teacher", action: teacher },
+      { text: "🔒 Lockers", action: () => changeRoom("lockers") }
+    ]
+  },
+
+  lockers: {
+    title: "Lockers",
+    items: [
+      { text: "🔐 Open Locker", action: locker },
+      { text: "📚 Library", action: () => changeRoom("library") }
+    ]
+  },
+
+  library: {
+    title: "Library",
+    items: [
+      { text: "📖 Pattern Puzzle", action: library },
+      { text: "🚪 Exit Door", action: escape }
+    ]
   }
+};
+
+// 🚪 ROOM CHANGE
+function changeRoom(r) {
+  state.room = r;
+  render();
 }
 
-// POPUP SYSTEM
-function showPopup(text) {
-  const popup = document.getElementById("popup");
-  popup.innerText = text;
-  popup.style.display = "block";
+// 🎨 RENDER ROOM
+function render() {
+  let room = rooms[state.room];
 
-  setTimeout(() => {
-    popup.style.display = "none";
-  }, 2000);
+  document.getElementById("room-title").innerText = room.title;
+
+  let html = "";
+  room.items.forEach(i => {
+    html += `<div class="item" onclick="i.action()">${i.text}</div>`;
+  });
+
+  document.getElementById("room-content").innerHTML = html;
+
+  document.getElementById("inventory").innerText =
+    state.inventory.join(", ") || "Empty";
+
+  document.getElementById("status").innerText =
+    "Explore the school...";
 }
 
-// PUZZLE 1: MATH POSTER
-function solveMath() {
-  let ans = prompt("Solve: 7 × 6 = ?");
-  if (ans === "42") {
-    mathSolved = true;
-    showPopup("Correct! Locker code hint: 4");
+// 🧠 PUZZLES
+function mathPuzzle() {
+  let a = prompt("6 × 7 = ?");
+  if (a === "42") {
+    state.flags.math = true;
+    alert("Correct!");
   } else {
-    showPopup("Wrong answer!");
+    alert("Wrong");
   }
 }
 
-// NPC TEACHER
-function talkTeacher() {
-  teacherClue = true;
-  showPopup("Teacher: 'The library knows everything...'");
+function teacher() {
+  alert("Teacher: Something is hidden in the library...");
 }
 
-// LOCKER PUZZLE
-function openLocker() {
-  let code = prompt("Enter 3-digit locker code:");
+function locker() {
+  if (!state.flags.math) {
+    alert("Solve math first");
+    return;
+  }
+
+  let code = prompt("Enter code:");
   if (code === "421") {
-    getItem("key");
+    state.inventory.push("key");
+    alert("You got a key!");
   } else {
-    showPopup("Incorrect code");
+    alert("Wrong code");
   }
 }
 
-// LIBRARY PUZZLE
-function libraryPuzzle() {
-  if (teacherClue) {
-    bookSolved = true;
-    showPopup("Books reveal word: LAB");
+function library() {
+  let a = prompt("2,4,8,16,?");
+  if (a === "32") {
+    state.flags.library = true;
+    alert("Library solved");
   } else {
-    showPopup("Nothing makes sense yet...");
+    alert("Think pattern");
   }
 }
 
-// END GAME
+// 🏁 ENDINGS
 function escape() {
-  if (inventory.includes("key") && bookSolved) {
-    showPopup("YOU ESCAPED... but this school was an experiment.");
+  if (state.flags.math && state.flags.library && state.inventory.includes("key")) {
+    switchScreen("win");
   } else {
-    showPopup("Door is locked. You need more clues.");
+    switchScreen("lose");
   }
+}
+
+// 🔁 RESTART
+function restart() {
+  switchScreen("menu");
 }
