@@ -1,138 +1,159 @@
-let state;
+let state = {
+  room: "classroom",
+  inventory: [],
+  flags: {
+    math: false,
+    locker: false,
+    library: false
+  }
+};
 
-// 🎮 INIT GAME
-function startGame() {
-  state = {
-    inventory: [],
-    flags: {
-      math: false,
-      locker: false,
-      library: false
-    },
-    room: "classroom"
-  };
-
-  switchScreen("game");
-  render();
+/* 🗺️ MAP SYSTEM */
+function openMap() {
+  switchScreen("mapScreen");
 }
 
-// 🔄 SCREEN SWITCH
+function startGame() {
+  switchScreen("gameScreen");
+  enterRoom("classroom");
+}
+
+/* SCREEN SWITCH */
 function switchScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// 🎮 ROOM DATA
-const rooms = {
-  classroom: {
-    title: "Classroom",
-    items: [
-      { text: "📊 Solve Math", action: mathPuzzle },
-      { text: "🚪 Hallway", action: () => changeRoom("hallway") }
-    ]
-  },
+/* 🚪 ROOM SYSTEM (CINEMATIC) */
+function enterRoom(room) {
+  let fade = document.getElementById("fade");
+  fade.style.opacity = 1;
 
-  hallway: {
-    title: "Hallway",
-    items: [
-      { text: "🧑‍🏫 Teacher", action: teacher },
-      { text: "🔒 Lockers", action: () => changeRoom("lockers") }
-    ]
-  },
+  setTimeout(() => {
+    state.room = room;
+    renderRoom();
 
-  lockers: {
-    title: "Lockers",
-    items: [
-      { text: "🔐 Open Locker", action: locker },
-      { text: "📚 Library", action: () => changeRoom("library") }
-    ]
-  },
-
-  library: {
-    title: "Library",
-    items: [
-      { text: "📖 Pattern Puzzle", action: library },
-      { text: "🚪 Exit Door", action: escape }
-    ]
-  }
-};
-
-// 🚪 ROOM CHANGE
-function changeRoom(r) {
-  state.room = r;
-  render();
+    fade.style.opacity = 0;
+    switchScreen("gameScreen");
+  }, 300);
 }
 
-// 🎨 RENDER ROOM
-function render() {
+/* 🎮 RENDER ROOM */
+function renderRoom() {
+  const rooms = {
+    classroom: {
+      title: "Classroom",
+      items: [
+        { text: "📊 Math Puzzle", action: mathPuzzle },
+        { text: "➡ Hallway", action: () => enterRoom("hallway") }
+      ]
+    },
+
+    hallway: {
+      title: "Hallway",
+      items: [
+        { text: "🧑‍🏫 Talk Teacher", action: teacher },
+        { text: "🔒 Lockers", action: () => enterRoom("lockers") }
+      ]
+    },
+
+    lockers: {
+      title: "Lockers",
+      items: [
+        { text: "🔐 Open Locker", action: locker },
+        { text: "📚 Library", action: () => enterRoom("library") }
+      ]
+    },
+
+    library: {
+      title: "Library",
+      items: [
+        { text: "📖 Pattern Puzzle", action: library },
+        { text: "🚪 Exit", action: escape }
+      ]
+    }
+  };
+
   let room = rooms[state.room];
 
   document.getElementById("room-title").innerText = room.title;
 
   let html = "";
-  room.items.forEach(i => {
-    html += `<div class="item" onclick="i.action()">${i.text}</div>`;
+
+  room.items.forEach((item, i) => {
+    html += `<div class="item" onclick="runAction(${i})">${item.text}</div>`;
   });
 
   document.getElementById("room-content").innerHTML = html;
 
-  document.getElementById("inventory").innerText =
-    state.inventory.join(", ") || "Empty";
-
-  document.getElementById("status").innerText =
-    "Explore the school...";
+  window.currentItems = room.items;
 }
 
-// 🧠 PUZZLES
+/* ⚙️ ACTION RUNNER */
+function runAction(index) {
+  window.currentItems[index].action();
+  renderRoom();
+}
+
+/* 💬 DIALOGUE SYSTEM (REAL GAME STYLE) */
+function say(text) {
+  let box = document.getElementById("dialogueBox");
+  box.innerText = text;
+  box.style.display = "block";
+
+  setTimeout(() => {
+    box.style.display = "none";
+  }, 2000);
+}
+
+/* 🧠 PUZZLES */
 function mathPuzzle() {
   let a = prompt("6 × 7 = ?");
   if (a === "42") {
     state.flags.math = true;
-    alert("Correct!");
+    say("Math solved. Locker unlocked.");
   } else {
-    alert("Wrong");
+    say("Wrong.");
   }
 }
 
 function teacher() {
-  alert("Teacher: Something is hidden in the library...");
+  say("Teacher: Something is hidden in the library...");
 }
 
 function locker() {
   if (!state.flags.math) {
-    alert("Solve math first");
+    say("Solve math first.");
     return;
   }
 
   let code = prompt("Enter code:");
   if (code === "421") {
     state.inventory.push("key");
-    alert("You got a key!");
+    say("You got a key!");
   } else {
-    alert("Wrong code");
+    say("Wrong code.");
   }
 }
 
 function library() {
-  let a = prompt("2,4,8,16,?");
+  let a = prompt("2, 4, 8, 16, ?");
   if (a === "32") {
     state.flags.library = true;
-    alert("Library solved");
+    say("Library puzzle solved.");
   } else {
-    alert("Think pattern");
+    say("Think pattern.");
   }
 }
 
-// 🏁 ENDINGS
+/* 🏁 ENDING */
 function escape() {
   if (state.flags.math && state.flags.library && state.inventory.includes("key")) {
-    switchScreen("win");
+    say("🟢 TRUE ENDING: You escaped and uncovered the truth.");
   } else {
-    switchScreen("lose");
+    say("🔴 Locked. You are trapped.");
   }
 }
 
-// 🔁 RESTART
-function restart() {
-  switchScreen("menu");
-}
+/* INIT */
+renderRoom();
