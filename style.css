@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+.room {
+  display: none;
+  padding: 20px;
+}
+
+.active {
+  display: block;
+}
+
+button {
+  margin: 8px;
+  padding: 10px 15px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+button:hover {
+  background: #334155;
+}
+
+#inventory {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #020617;
+  padding: 10px;
+}
+
+#popup {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  display: none;
+}
