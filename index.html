@@ -1,34 +1,65 @@
-<div id="fade"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Escape Room: School Secrets</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-<div id="dialogueBox">
-  <div id="dialogueText"></div>
+<body>
+
+<h1>🏫 Escape Room: School Secrets</h1>
+
+<!-- INVENTORY -->
+<div id="inventoryBox">Inventory: <span id="inventory"></span></div>
+
+<!-- POPUP -->
+<div id="popup"></div>
+
+<!-- CLASSROOM -->
+<div id="classroom" class="room active">
+  <h2>Classroom</h2>
+  <p>You are locked inside after school… something feels off.</p>
+
+  <button onclick="mathPuzzle()">📊 Math Poster</button>
+  <button onclick="goRoom('hallway')">➡ Go Hallway</button>
 </div>
 
-<!-- 🗺️ MAP SCREEN -->
-<div id="mapScreen" class="screen active">
-  <h1>🏫 School Map</h1>
+<!-- HALLWAY -->
+<div id="hallway" class="room">
+  <h2>Hallway</h2>
 
-  <div class="map-grid">
-    <button onclick="enterRoom('classroom')">Classroom</button>
-    <button onclick="enterRoom('hallway')">Hallway</button>
-    <button onclick="enterRoom('lockers')">Lockers</button>
-    <button onclick="enterRoom('library')">Library</button>
-  </div>
-
-  <button onclick="startGame()">Start Game</button>
+  <button onclick="teacher()">🧑‍🏫 Talk to Teacher</button>
+  <button onclick="goRoom('lockers')">🔒 Lockers</button>
+  <button onclick="goRoom('classroom')">⬅ Back</button>
 </div>
 
-<!-- GAME SCREEN -->
-<div id="gameScreen" class="screen">
-  <div id="hud">
-    <h3>Inventory</h3>
-    <div id="inventory"></div>
+<!-- LOCKERS -->
+<div id="lockers" class="room">
+  <h2>Lockers</h2>
 
-    <button onclick="openMap()">Map</button>
-  </div>
-
-  <div id="screen">
-    <h2 id="room-title"></h2>
-    <div id="room-content"></div>
-  </div>
+  <button onclick="openLocker()">🔐 Open Locker</button>
+  <button onclick="goRoom('library')">📚 Library</button>
+  <button onclick="goRoom('hallway')">⬅ Back</button>
 </div>
+
+<!-- LIBRARY -->
+<div id="library" class="room">
+  <h2>Library</h2>
+
+  <button onclick="libraryPuzzle()">📖 Books</button>
+  <button onclick="escape()">🚨 Secret Door</button>
+  <button onclick="goRoom('lockers')">⬅ Back</button>
+</div>
+
+<!-- SECRET END -->
+<div id="secret" class="room">
+  <h2>🚨 SECRET LAB</h2>
+  <p>Something went VERY wrong...</p>
+
+  <button onclick="escapeFinal()">🏃 FINAL ESCAPE</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
