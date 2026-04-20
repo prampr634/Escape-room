@@ -7,7 +7,9 @@ let state = {
     library: false
   }
 };
-
+function test() {
+  alert("GAME UPDATED ✔");
+}
 /* 🗺️ MAP SYSTEM */
 function openMap() {
   switchScreen("mapScreen");
@@ -56,7 +58,7 @@ function renderRoom() {
         { text: "🔒 Lockers", action: () => enterRoom("lockers") }
       ]
     },
-
+test();
     lockers: {
       title: "Lockers",
       items: [
